@@ -52,19 +52,15 @@ namespace TechTrendTracker.Controllers
         [HttpGet]
         public IActionResult Edit(Guid id)
         {
-            //1st method
-            //var tag = bloggieDbContext.Tags.Find(id);
+            var tag = bloggieDbContext.Tags.FirstOrDefault(x => x.Id == id);
 
-            //2nd method
-           var tag = bloggieDbContext.Tags.FirstOrDefault(x => x.Id == id);
-
-            if(tag != null)
+            if (tag != null)
             {
                 var editTagRequest = new EditTagRequest
                 {
-                    Id =tag.Id,
+                    Id = tag.Id,
                     Name = tag.Name,
-                    DisplayName=tag.DisplayName,
+                    DisplayName = tag.DisplayName,
                 };
                 return View(editTagRequest);
             }
@@ -72,48 +68,42 @@ namespace TechTrendTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit (EditTagRequest editTagRequest)
+        public IActionResult Edit(EditTagRequest editTagRequest)
         {
-            var tag = new Tag
-            {
-                Id = editTagRequest.Id,
-                Name = editTagRequest.Name,
-                DisplayName = editTagRequest.DisplayName,
-            };
+            var existingTag = bloggieDbContext.Tags.Find(editTagRequest.Id);
 
-            var existingTag =bloggieDbContext.Tags.Find(tag.Id);
-
-            if(existingTag != null)
+            if (existingTag != null)
             {
-                existingTag.Name = tag.Name;
-                existingTag.DisplayName = tag.DisplayName;
+                existingTag.Name = editTagRequest.Name;
+                existingTag.DisplayName = editTagRequest.DisplayName;
 
                 //save the changes
                 bloggieDbContext.SaveChanges();
 
                 //show success notification
-                return RedirectToAction("Edit", new {id= editTagRequest.Id});
+                return RedirectToAction("Edit", new { id = editTagRequest.Id });
             }
 
-            //Show Failre notification
-            return View("Edit", new {id= editTagRequest.Id});
+            //Show Failure notification
+            return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
 
-        [HttpPost]
-        public IActionResult Delete(EditTagRequest editTagRequest)
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
         {
-            var tag =bloggieDbContext.Tags.Find(editTagRequest.Id);
-            if(tag != null)
+            var tag = bloggieDbContext.Tags.Find(id);
+
+            if (tag != null)
             {
                 bloggieDbContext.Tags.Remove(tag);
                 bloggieDbContext.SaveChanges();
 
-                //show a success notification
+                // show a success notification
                 return RedirectToAction("List");
             }
 
-            //show an error notification
-            return RedirectToAction("Edit", new { id = editTagRequest.Id });
+            // show an error notification
+            return RedirectToAction("Edit", new { id = id });
         }
 
     }
