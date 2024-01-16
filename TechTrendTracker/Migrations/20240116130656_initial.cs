@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechTrendTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,7 @@ namespace TechTrendTracker.Migrations
                 name: "BlogPosts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Heading = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -49,7 +48,7 @@ namespace TechTrendTracker.Migrations
                 name: "BlogPostTag",
                 columns: table => new
                 {
-                    BlogPostsId = table.Column<int>(type: "int", nullable: false),
+                    BlogPostsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TagsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

@@ -12,8 +12,8 @@ using TechTrendTracker.Data;
 namespace TechTrendTracker.Migrations
 {
     [DbContext(typeof(BloggieDbContext))]
-    [Migration("20231107042811_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20240116130656_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,8 @@ namespace TechTrendTracker.Migrations
 
             modelBuilder.Entity("BlogPostTag", b =>
                 {
-                    b.Property<int>("BlogPostsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BlogPostsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TagsId")
                         .HasColumnType("uniqueidentifier");
@@ -42,11 +42,9 @@ namespace TechTrendTracker.Migrations
 
             modelBuilder.Entity("TechTrendTracker.Models.Domain.BlogPost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Author")
                         .IsRequired()

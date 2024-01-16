@@ -3,57 +3,56 @@ using Microsoft.EntityFrameworkCore;
 using TechTrendTracker.Data;
 using TechTrendTracker.Models.Domain;
 using TechTrendTracker.Models.ViewModels;
+using TechTrendTracker.Repositories.Interface;
 
 namespace TechTrendTracker.Controllers
 {
     public class AdminTagsController : Controller
     {
+        private readonly ITagRepository _tagRepository;
 
-        private BloggieDbContext bloggieDbContext;
-
-        public AdminTagsController (BloggieDbContext bloggieDbContext)
+        public AdminTagsController(ITagRepository tagRepository)
         {
-            this.bloggieDbContext = bloggieDbContext;
+            _tagRepository = tagRepository;
         }
 
         [HttpGet]
-        public  IActionResult Add()
+        public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
         [ActionName("Add")]
-        public async Task <IActionResult> Add(AddTagRequest addTagRequest)
+        public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
             //Mapping AddTagRequest to Tag Domain model
             var tag = new Tag
             {
                 Name = addTagRequest.Name,
-            DisplayName = addTagRequest.DisplayName
-             };
+                DisplayName = addTagRequest.DisplayName
+            };
 
-           await bloggieDbContext.Tags.AddAsync(tag);
-            await bloggieDbContext.SaveChangesAsync();
+            await _tagRepository.AddAync(tag);
 
             return RedirectToAction("List");
         }
 
+        
         [HttpGet]
         [ActionName("List")]
         public async Task<IActionResult> List()
         {
             //use dbContext to read the tags
-
-           var tags = await bloggieDbContext.Tags.ToListAsync();
+            var tags = await _tagRepository.GetAllAsync();
 
             return View(tags);
         }
 
         [HttpGet]
-        public async Task <IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var tag = await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            var tag = await _tagRepository.GetAsync(id);
 
             if (tag != null)
             {
@@ -69,22 +68,28 @@ namespace TechTrendTracker.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> Edit(EditTagRequest editTagRequest)
+        public async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
-            var existingTag =  await bloggieDbContext.Tags.FindAsync(editTagRequest.Id);
 
-            if (existingTag != null)
+            var tag = new Tag
             {
-                existingTag.Name = editTagRequest.Name;
-                existingTag.DisplayName = editTagRequest.DisplayName;
+                Id = editTagRequest.Id,
+                Name = editTagRequest.Name,
+                DisplayName = editTagRequest.DisplayName,
+            };
 
-                //save the changes
-                 await bloggieDbContext.SaveChangesAsync();
-                 
+            var updatedTag = await _tagRepository.UpdateAync(tag);
+
+            //check
+
+            if (updatedTag != null)
+            {
                 //show success notification
-                return RedirectToAction("Edit", new { id = editTagRequest.Id });
             }
+            else
+            {
 
+            }
             //Show Failure notification
             return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
@@ -92,14 +97,11 @@ namespace TechTrendTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(EditTagRequest editTagRequest)
         {
-            var tag = await bloggieDbContext.Tags.FindAsync(editTagRequest.Id);
+           var deletedTag = await _tagRepository.DeleteAync(editTagRequest.Id);
 
-            if (tag != null)
+            if(deletedTag != null)
             {
-                bloggieDbContext.Tags.Remove(tag);
-               await bloggieDbContext.SaveChangesAsync();
-
-                // show a success notification
+                //show Success Notification
                 return RedirectToAction("List");
             }
 

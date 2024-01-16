@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TechTrendTracker.Data;
+using TechTrendTracker.Repositories;
+using TechTrendTracker.Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllersWithViews();
 //inject connection string
 builder.Services.AddDbContext<BloggieDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("BloggieDbConnectionString")));
+
+//inject repo
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = builder.Build();
 

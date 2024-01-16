@@ -2,6 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechTrendTracker.Data;
 
 #nullable disable
@@ -22,8 +24,8 @@ namespace TechTrendTracker.Migrations
 
             modelBuilder.Entity("BlogPostTag", b =>
                 {
-                    b.Property<int>("BlogPostsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BlogPostsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TagsId")
                         .HasColumnType("uniqueidentifier");
@@ -37,11 +39,9 @@ namespace TechTrendTracker.Migrations
 
             modelBuilder.Entity("TechTrendTracker.Models.Domain.BlogPost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Author")
                         .IsRequired()
