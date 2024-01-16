@@ -13,24 +13,27 @@
             <input type="text" id="id" class="form-control" asp-for="Id" readonly />
         </div>
 
+       @*  this for name *@
         <div class="mb-3">
             <label class="form-label">Name</label>
             <input type="text" id="name" class="form-control" asp-for="Name" />
         </div>
 
+        @* this is for display Name *@
         <div class="mb-3">
             <label class="form-label">Display Name</label>
             <input type="text" id="displayName" class="form-control" asp-for="DisplayName" />
         </div>
-
+@* 
+        this is for button to submit the form which is update/Delete the edited form *@
         <div class="mb-3">
             <div class="d-flex">
                 <button type="submit" class="btn-dark">Update</button>
-                <a class="btn btn-danger ms-2"
+                <button  class="btn btn-danger ms-2" type="submit"
                    asp-area=""
                    asp-controller="AdminTags"
                    asp-action="Delete"
-                   asp-route-id="@Model.Id">Delete</a>
+                   >Delete</button>
             </div>
         </div>
     </form>

@@ -79,7 +79,7 @@ namespace TechTrendTracker.Controllers
 
                 //save the changes
                 bloggieDbContext.SaveChanges();
-
+                 
                 //show success notification
                 return RedirectToAction("Edit", new { id = editTagRequest.Id });
             }
@@ -88,10 +88,10 @@ namespace TechTrendTracker.Controllers
             return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
 
-        [HttpDelete]
-        public IActionResult Delete(Guid id)
+        [HttpPost]
+        public IActionResult Delete(EditTagRequest editTagRequest)
         {
-            var tag = bloggieDbContext.Tags.Find(id);
+            var tag = bloggieDbContext.Tags.Find(editTagRequest.Id);
 
             if (tag != null)
             {
@@ -103,7 +103,7 @@ namespace TechTrendTracker.Controllers
             }
 
             // show an error notification
-            return RedirectToAction("Edit", new { id = id });
+            return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
 
     }
