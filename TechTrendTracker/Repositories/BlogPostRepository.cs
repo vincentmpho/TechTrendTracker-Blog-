@@ -1,4 +1,5 @@
-﻿using TechTrendTracker.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TechTrendTracker.Data;
 using TechTrendTracker.Models.Domain;
 using TechTrendTracker.Repositories.Interface;
 
@@ -25,9 +26,9 @@ namespace TechTrendTracker.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<BlogPost>> GetAllAsync()
+        public async Task<IEnumerable<BlogPost>> GetAllAsync()
         {
-            throw new NotImplementedException();
+           return await _bloggieDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
         }
 
         public Task<BlogPost?> GetAsync(Guid id)

@@ -76,5 +76,15 @@ namespace TechTrendTracker.Controllers
             await _blogPostRepository.AddAsync(blogpostModel);
             return RedirectToAction("Add");
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> List()
+        {
+            //Call the Repository
+             var blogPosts= await _blogPostRepository.GetAllAsync();
+
+            return View(blogPosts);
+        }
     }
 }
