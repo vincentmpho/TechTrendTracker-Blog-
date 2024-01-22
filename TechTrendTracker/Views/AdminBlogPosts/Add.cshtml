@@ -9,62 +9,64 @@
     </div>
 </div>
 @* 
-Create form *@
+Create form to add *@
 
 <div class="container py-5">
      <form method="post">
 
          <div class="mb-3">
-             <label class="col-form-label">Heading</label>
+             <label class="form-label">Heading</label>
              <input type="text" class="form-control" id="heading" 
              asp-for="Heading"
              />
          </div>
 
         <div class="mb-3">
-            <label class="col-form-label">Page Title</label>
+            <label class="form-label">Page Title</label>
             <input type="text" class="form-control" id="PageTitle"
                    asp-for="PageTitle" />
         </div>
 
 
         <div class="mb-3">
-            <label class="col-form-label">Content</label>
+            <label class="form-label">Content</label>
             <textarea class="form-control" id="content" asp-for="Content"></textarea>
         </div>
 
 
         <div class="mb-3">
-            <label class="col-form-label">Short Description</label>
+            <label class="form-label">Short Description</label>
             <input type="text" class="form-control" id="shortDescription"
                    asp-for="ShortDescription" />
         </div>
 
 
         <div class="mb-3">
-            <label class="col-form-label">Feaured Image Url</label>
+            <label class="form-label">Feaured Image URL</label>
             <input type="text" class="form-control" id="feauredImageUrl"
                    asp-for="FeauredImageUrl" />
         </div>
 
 
         <div class="mb-3">
-            <label class="col-form-label">URL Handle</label>
+            <label class="form-label">URL Handle</label>
             <input type="text" class="form-control" id="urlHandle"
                    asp-for="UrlHandle" />
         </div>
 
         <div class="mb-3">
-            <label class="col-form-label">Published Date</label>
+            <label class="form-label">Published Date</label>
             <input type="date" class="form-control" id="publishedDate"
                    asp-for="PublishedDate" />
         </div>
 
         <div class="mb-3">
-            <label class="col-form-label">Author</label>
+            <label class="form-label">Author</label>
             <input type="text" class="form-control" id="author"
                    asp-for="Author" />
         </div>
+
+        @* CheckBox *@
 
         <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible">
@@ -82,7 +84,6 @@ Create form *@
             asp-for="SelectedTags">
             </select>
         </div>
-
 
        @* submit  Button *@
 
