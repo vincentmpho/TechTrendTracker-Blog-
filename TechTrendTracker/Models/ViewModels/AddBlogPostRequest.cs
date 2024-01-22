@@ -14,7 +14,6 @@ namespace TechTrendTracker.Models.ViewModels
         public string Author { get; set; }
         public bool Visible { get; set; }
 
-
         //Display tags
         public IEnumerable<SelectListItem> Tags { get; set; }
 
