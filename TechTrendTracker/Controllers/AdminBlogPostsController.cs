@@ -6,7 +6,7 @@ using TechTrendTracker.Repositories.Interface;
 
 namespace TechTrendTracker.Controllers
 {
-    public class AdminBlogPostsController : Controller 
+    public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository _tagRepository;
         private readonly IBlogPostRepository _blogPostRepository;
@@ -17,7 +17,7 @@ namespace TechTrendTracker.Controllers
             _blogPostRepository = blogPostRepository;
         }
         [HttpGet]
-       public async Task< IActionResult> Add()
+        public async Task<IActionResult> Add()
         {
             //get tags from repository
 
@@ -53,15 +53,15 @@ namespace TechTrendTracker.Controllers
                 Author = addBlogPostRequest.Author,
                 Visible = addBlogPostRequest.Visible,
             };
-            
+
             //Map Tags  from selected tags
 
             var selectedTags = new List<Tag>();
 
-            foreach(var selectedTagId in addBlogPostRequest.SelectedTags)
+            foreach (var selectedTagId in addBlogPostRequest.SelectedTags)
             {
                 var selectedTagIdAsId = Guid.Parse(selectedTagId);
-               var existingTag = await _tagRepository.GetAsync(selectedTagIdAsId);
+                var existingTag = await _tagRepository.GetAsync(selectedTagIdAsId);
 
                 //check
 
@@ -82,7 +82,7 @@ namespace TechTrendTracker.Controllers
         public async Task<IActionResult> List()
         {
             //Call the Repository
-             var blogPosts= await _blogPostRepository.GetAllAsync();
+            var blogPosts = await _blogPostRepository.GetAllAsync();
 
             return View(blogPosts);
         }
@@ -122,8 +122,8 @@ namespace TechTrendTracker.Controllers
 
             }
             else
-            //Pass data to view
-            return View(null);
+                //Pass data to view
+                return View(null);
         }
 
         [HttpPost]
@@ -149,11 +149,11 @@ namespace TechTrendTracker.Controllers
             var selectedTags = new List<Tag>();
             foreach (var selectedTag in editBlogPostRequest.SelectedTags)
 
-               
+
             {
-                if (Guid.TryParse(selectedTag,out var tag))
+                if (Guid.TryParse(selectedTag, out var tag))
                 {
-                     var foundTag  =await _tagRepository.GetAsync(tag);
+                    var foundTag = await _tagRepository.GetAsync(tag);
 
                     //check
 
@@ -167,7 +167,7 @@ namespace TechTrendTracker.Controllers
             blogPostDomainModel.Tags = selectedTags;
 
             //Submit infomation to repo to update
-             var updatedBlog=await _blogPostRepository.UpdateAsync(blogPostDomainModel);
+            var updatedBlog = await _blogPostRepository.UpdateAsync(blogPostDomainModel);
 
             //check
             if (updatedBlog != null)
@@ -178,6 +178,24 @@ namespace TechTrendTracker.Controllers
 
             //Show error notification
             return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
+        {
+            //Talk to Repository to delete this blog post and tags
+            var deletedBlogPost = await _blogPostRepository.DeleteAsync(editBlogPostRequest.Id);
+
+            //check
+            if (deletedBlogPost != null)
+            {
+                //Show success notification
+                return RedirectToAction("List");
+            }
+
+            //show error notification
+            return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
         }
     }
 }
