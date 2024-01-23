@@ -13,7 +13,7 @@
         public string Author { get; set; }
         public bool Visible { get; set; }
 
-        //navigate 
+        //navigation property
         public ICollection<Tag>Tags { get; set; }
     }
 }
