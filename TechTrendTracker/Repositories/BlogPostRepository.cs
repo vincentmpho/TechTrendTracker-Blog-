@@ -46,6 +46,13 @@ namespace TechTrendTracker.Repositories
            return  await _bloggieDbContext.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<BlogPost?> GetByUrlHandleAsync(string urlHanlde)
+        {
+            return  await _bloggieDbContext.BlogPosts
+                .Include(X =>X.Tags)
+                .FirstOrDefaultAsync(x => x.UrlHandle == urlHanlde);
+        }
+
         public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
         {
               var existingBlog=await  _bloggieDbContext.BlogPosts.Include(x=> x.Tags)
